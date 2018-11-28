@@ -1,0 +1,39 @@
+* {
+    font-family: "Muli", sans-serif;
+    background-color: #f5ffc3;
+}
+
+.welcome-container {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.registration-container form {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+#startlogo {
+    width: 200px;
+}
+
+#logo {
+    width: 70px;
+    vertical-align: middle;
+}
+
+#logout {
+    float: right;
+}
+
+.error {
+    color: red;
+}
+
+a {
+    text-decoration: none;
+    color: #612147;
+}
