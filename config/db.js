@@ -13,3 +13,16 @@ exports.createUser = (first, last, email, password) => {
             return results.rows;
         });
 };
+
+exports.getUser = email => {
+    return db
+        .query(
+            `SELECT *
+        FROM users
+        WHERE users.email = $1`,
+            [email]
+        )
+        .then(results => {
+            return results.rows;
+        });
+};

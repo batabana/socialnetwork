@@ -10,7 +10,8 @@
     align-items: center;
 }
 
-.registration-container form {
+.registration-container form,
+.login-container form {
     width: 300px;
     display: flex;
     flex-direction: column;
@@ -30,7 +31,7 @@
 }
 
 .error {
-    color: red;
+    border: 1px solid red;
 }
 
 a {
