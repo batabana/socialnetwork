@@ -6,5 +6,6 @@ CREATE TABLE users(
     last VARCHAR(200) NOT NULL,
     email VARCHAR(200) NOT NULL UNIQUE,
     password VARCHAR(200) NOT NULL,
+    image TEXT,
     createtime TIMESTAMP DEFAULT current_timestamp
 );

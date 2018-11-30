@@ -22,12 +22,14 @@
 }
 
 #logo {
-    width: 70px;
+    width: 100px;
     vertical-align: middle;
 }
 
 #logout {
-    float: right;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
 }
 
 .error {
@@ -37,4 +39,14 @@
 a {
     text-decoration: none;
     color: #612147;
+}
+
+.profile-pic-container {
+    display: inline;
+}
+
+#profile-pic {
+    width: 200px;
+    float: right;
+    cursor: pointer;
 }

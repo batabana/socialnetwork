@@ -6,6 +6,13 @@ const bcrypt = require("./config/bcrypt.js");
 const db = require("./config/db.js");
 const csurf = require("csurf");
 
+// file upload requirements
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
+const s3 = require("./config/s3.js");
+const config = require("./config/config.json");
+
 // setup bodyparser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -30,8 +37,28 @@ app.use(function(req, res, next) {
     next();
 });
 
+// set up file uploading
+const diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+
 // serve static files
 app.use(express.static("./public"));
+app.use(express.static("./uploads"));
 
 // setup compression
 app.use(compression());
@@ -73,7 +100,7 @@ app.post("/registration", (req, res) => {
 
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
-    db.getUser(email)
+    db.getUserByEmail(email)
         .then(results => {
             req.session.userId = results[0].id;
             return bcrypt.compare(password, results[0].password);
@@ -93,7 +120,40 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.get("/logout", function(req, res) {
+app.get("/user", (req, res) => {
+    db.getUserById(req.session.userId)
+        .then(results => {
+            res.json(results[0]);
+        })
+        .catch(err => {
+            console.log("Error in GET /user: ", err);
+        });
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
+    // upload img to uploads
+    // upload img to amazon
+    // insert img in db (update users-table)
+    // send response back to uploader
+    if (req.file) {
+        const url = config.s3Url + req.file.filename;
+        console.log(url, req.session.userId);
+        db.saveImage(url, req.session.userId)
+            .then(() => {
+                res.json({ success: true });
+            })
+            .catch(err => {
+                console.log("error in saveImage: ", err);
+                res.json({ success: false });
+            });
+    } else {
+        res.json({
+            success: false
+        });
+    }
+});
+
+app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");
 });
@@ -108,7 +168,7 @@ app.get("/welcome", (req, res) => {
 });
 
 // all other urls, if logged in: serve index.html
-app.get("*", function(req, res) {
+app.get("*", (req, res) => {
     if (!req.session.userId && req.url != "/welcome") {
         res.redirect("/welcome");
     } else {

@@ -4,9 +4,6 @@ export default function Logo() {
     return (
         <div>
             <img src="/logo.png" alt="logo" id="logo" />
-            <a href="/logout" id="logout">
-                Logout
-            </a>
         </div>
     );
 }

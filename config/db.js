@@ -14,15 +14,37 @@ exports.createUser = (first, last, email, password) => {
         });
 };
 
-exports.getUser = email => {
+exports.getUserByEmail = email => {
     return db
         .query(
-            `SELECT *
+            `SELECT id, password
         FROM users
-        WHERE users.email = $1`,
+        WHERE email = $1`,
             [email]
         )
         .then(results => {
             return results.rows;
         });
+};
+
+exports.getUserById = id => {
+    return db
+        .query(
+            `SELECT first, last, email, image
+        FROM users
+        WHERE id = $1`,
+            [id]
+        )
+        .then(results => {
+            return results.rows;
+        });
+};
+
+exports.saveImage = (url, id) => {
+    return db.query(
+        `UPDATE users
+        SET image = $1
+        WHERE id = $2`,
+        [url, id]
+    );
 };
