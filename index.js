@@ -48,7 +48,6 @@ const diskStorage = multer.diskStorage({
         });
     }
 });
-
 const uploader = multer({
     storage: diskStorage,
     limits: {
@@ -131,16 +130,11 @@ app.get("/user", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
-    // upload img to uploads
-    // upload img to amazon
-    // insert img in db (update users-table)
-    // send response back to uploader
     if (req.file) {
         const url = config.s3Url + req.file.filename;
-        console.log(url, req.session.userId);
         db.saveImage(url, req.session.userId)
-            .then(() => {
-                res.json({ success: true });
+            .then(results => {
+                res.json(results);
             })
             .catch(err => {
                 console.log("error in saveImage: ", err);

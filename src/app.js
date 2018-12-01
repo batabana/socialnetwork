@@ -11,24 +11,32 @@ export default class App extends React.Component {
             uploaderIsVisible: false
         };
         this.showUploader = this.showUploader.bind(this);
+        this.hideUploader = this.hideUploader.bind(this);
+        this.updateImage = this.updateImage.bind(this);
     }
 
     showUploader() {
-        this.setState(
-            {
-                uploaderIsVisible: true
-            },
-            () => console.log("state showUploader", this.state)
-        );
+        this.setState({
+            uploaderIsVisible: true
+        });
+    }
+
+    hideUploader() {
+        this.setState({
+            uploaderIsVisible: false
+        });
+    }
+
+    updateImage(url) {
+        this.setState({
+            image: url
+        });
     }
 
     componentDidMount() {
         // destructuring also works directly in the callback
         axios.get("/user").then(({ data }) => {
-            console.log("data in getUsers", data);
-            this.setState(data, () => {
-                console.log("this.state in then", this.state);
-            });
+            this.setState(data);
         });
     }
 
@@ -42,10 +50,12 @@ export default class App extends React.Component {
                 <ProfilePic
                     first={this.state.first}
                     last={this.state.last}
-                    profilePicUrl={this.state.image}
+                    profilePicUrl={this.state.image ? this.state.image : "/default.jpg"}
                     showUploader={this.showUploader}
                 />
-                {this.state.uploaderIsVisible && <Uploader />}
+                {this.state.uploaderIsVisible && (
+                    <Uploader hideUploader={this.hideUploader} updateImage={this.updateImage} />
+                )}
             </div>
         );
     }

@@ -41,10 +41,15 @@ exports.getUserById = id => {
 };
 
 exports.saveImage = (url, id) => {
-    return db.query(
-        `UPDATE users
+    return db
+        .query(
+            `UPDATE users
         SET image = $1
-        WHERE id = $2`,
-        [url, id]
-    );
+        WHERE id = $2
+        RETURNING image`,
+            [url, id]
+        )
+        .then(results => {
+            return results.rows;
+        });
 };
