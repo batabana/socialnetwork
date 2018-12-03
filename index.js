@@ -121,15 +121,11 @@ app.post("/login", (req, res) => {
 
 app.get("/user", (req, res) => {
     db.getUserById(req.session.userId)
-        .then(results => {
-            res.json(results[0]);
-        })
-        .catch(err => {
-            console.log("Error in GET /user: ", err);
-        });
+        .then(results => res.json(results[0]))
+        .catch(err => console.log("Error in GET /user: ", err));
 });
 
-app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     if (req.file) {
         const url = config.s3Url + req.file.filename;
         db.saveImage(url, req.session.userId)
@@ -145,6 +141,17 @@ app.post("/upload", uploader.single("file"), s3.upload, function(req, res) {
             success: false
         });
     }
+});
+
+app.post("/api/editbio", (req, res) => {
+    const { bio } = req.body;
+    db.updateBio(req.session.userId, bio)
+        .then(results => {
+            res.json(results);
+        })
+        .catch(err => {
+            console.log("Error in POST /api/editbio: ", err);
+        });
 });
 
 app.get("/logout", (req, res) => {

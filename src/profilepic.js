@@ -7,7 +7,7 @@ export default function ProfilePic(props) {
                 onClick={props.showUploader}
                 src={props.profilePicUrl}
                 alt={`${props.first} ${props.last}`}
-                id="profile-pic"
+                className="profile-pic"
             />
         </div>
     );

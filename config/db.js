@@ -30,7 +30,7 @@ exports.getUserByEmail = email => {
 exports.getUserById = id => {
     return db
         .query(
-            `SELECT first, last, email, image
+            `SELECT first, last, email, image, bio
         FROM users
         WHERE id = $1`,
             [id]
@@ -48,6 +48,20 @@ exports.saveImage = (url, id) => {
         WHERE id = $2
         RETURNING image`,
             [url, id]
+        )
+        .then(results => {
+            return results.rows;
+        });
+};
+
+exports.updateBio = (id, bio) => {
+    return db
+        .query(
+            `UPDATE users
+        SET bio = $2
+        WHERE id = $1
+        RETURNING *`,
+            [id, bio]
         )
         .then(results => {
             return results.rows;

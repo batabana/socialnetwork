@@ -3,3 +3,4 @@ node_modules
 secrets.json
 notes.md
 scrap
+.directory

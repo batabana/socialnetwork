@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default class Login extends React.Component {
     constructor() {
         super();
-        this.state = {};
+        this.state = { email: "", password: "" };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -41,14 +41,17 @@ export default class Login extends React.Component {
     }
 
     render() {
+        const { email, password } = this.state;
+        const isEnabled = email.length > 0 && password.length > 0;
+
         return (
             <div className="login-container">
                 <h1>Sign in</h1>
                 {this.state.error && <p className="error">Something went wrong, please try again.</p>}
                 <form onSubmit={this.handleSubmit}>
-                    <input onChange={this.handleChange} name="email" type="text" placeholder="email address" className={this.state.emailError ? "error" : null} />
-                    <input onChange={this.handleChange} name="password" type="password" placeholder="password" className={this.state.passwordError ? "error" : null} />
-                    <button>Login</button>
+                    <input onChange={this.handleChange} name="email" type="text" placeholder="email address" />
+                    <input onChange={this.handleChange} name="password" type="password" placeholder="password" />
+                    <button disabled={!isEnabled}>Login</button>
                 </form>
                 <p>
                     If you don{"'"}t have an account yet, please <Link to="/">sign up</Link>.

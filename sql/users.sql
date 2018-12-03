@@ -7,5 +7,6 @@ CREATE TABLE users(
     email VARCHAR(200) NOT NULL UNIQUE,
     password VARCHAR(200) NOT NULL,
     image TEXT,
+    bio TEXT,
     createtime TIMESTAMP DEFAULT current_timestamp
 );
