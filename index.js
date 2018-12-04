@@ -142,6 +142,51 @@ app.get("/api/user/:id", (req, res) => {
         });
 });
 
+app.get("/api/friend/:id", (req, res) => {
+    db.getFriend(req.params.id, req.session.userId)
+        .then(results => res.json(results))
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in GET /api/friend/id: ", err);
+        });
+});
+
+app.post("/api/makeFriend/:id", (req, res) => {
+    db.makeFriend(req.params.id, req.session.userId)
+        .then(() => res.json({ success: true }))
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in POST /api/makeFriend/id: ", err);
+        });
+});
+
+app.post("/api/cancelFriend/:id", (req, res) => {
+    db.cancelFriend(req.params.id, req.session.userId)
+        .then(() => res.json({ success: true }))
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in POST /api/cancelFriend/id: ", err);
+        });
+});
+
+app.post("/api/acceptFriend/:id", (req, res) => {
+    db.acceptFriend(req.session.userId, req.params.id)
+        .then(() => res.json({ success: true }))
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in POST /api/acceptFriend/id: ", err);
+        });
+});
+
+app.post("/api/deleteFriend/:id", (req, res) => {
+    db.deleteFriend(req.session.userId, req.params.id)
+        .then(() => res.json({ success: true }))
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in POST /api/deleteFriend/id: ", err);
+        });
+});
+
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     if (req.file) {
         const url = config.s3Url + req.file.filename;
