@@ -9,6 +9,7 @@ export default class Bio extends React.Component {
             showEditor: false
         };
         this.showEditor = this.showEditor.bind(this);
+        this.hideEditor = this.hideEditor.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -18,6 +19,12 @@ export default class Bio extends React.Component {
         this.setState({
             bio: this.props.bio,
             showEditor: true
+        });
+    }
+
+    hideEditor() {
+        this.setState({
+            showEditor: false
         });
     }
 
@@ -34,21 +41,22 @@ export default class Bio extends React.Component {
             .post("/api/editbio", this.state)
             .then(resp => {
                 self.props.setBio(resp.data[0].bio);
-                self.setState({
-                    showEditor: false
-                });
+                self.hideEditor();
             })
             .catch(err => console.log("error while saving bio: ", err));
     }
 
     render() {
         return (
-            <div>
+            <div className="bio-container">
                 {this.state.showEditor ? (
-                    <form onSubmit={this.handleSubmit}>
-                        <textarea defaultValue={this.props.bio} onChange={this.handleChange} name="bio" />
-                        <button>submit</button>
-                    </form>
+                    <div>
+                        <form onSubmit={this.handleSubmit}>
+                            <textarea defaultValue={this.props.bio} onChange={this.handleChange} name="bio" />
+                            <button>save</button>
+                        </form>
+                        <button onClick={this.hideEditor}>cancel</button>
+                    </div>
                 ) : (
                     <div>
                         {this.props.bio ? (

@@ -2,6 +2,7 @@ import React from "react";
 import axios from "./axios";
 import Logo from "./logo";
 import Profile from "./profile";
+import OtherPersonProfile from "./otherpersonprofile";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import { BrowserRouter, Route } from "react-router-dom";
@@ -78,6 +79,7 @@ export default class App extends React.Component {
                                 />
                             )}
                         />
+                        <Route path="/user/:id" component={OtherPersonProfile} />
                     </div>
                 </BrowserRouter>
                 <a href="/logout" id="logout">

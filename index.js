@@ -125,6 +125,23 @@ app.get("/user", (req, res) => {
         .catch(err => console.log("Error in GET /user: ", err));
 });
 
+app.get("/api/user/:id", (req, res) => {
+    if (req.params.id == req.session.userId) {
+        return res.redirect("/");
+    }
+    db.getUserById(req.params.id)
+        .then(results =>
+            res.json({
+                results: results[0],
+                success: true
+            })
+        )
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in GET /api/user/id: ", err);
+        });
+});
+
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     if (req.file) {
         const url = config.s3Url + req.file.filename;
