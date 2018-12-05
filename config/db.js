@@ -83,55 +83,39 @@ exports.getFriend = (id1, id2) => {
 };
 
 exports.makeFriend = (receiver, sender) => {
-    return db
-        .query(
-            `INSERT INTO friends (receiver, sender)
+    return db.query(
+        `INSERT INTO friends (receiver, sender)
         VALUES ($1, $2)
         RETURNING *`,
-            [receiver, sender]
-        )
-        .then(results => {
-            return results.rows;
-        });
+        [receiver, sender]
+    );
 };
 
 exports.cancelFriend = (receiver, sender) => {
-    return db
-        .query(
-            `DELETE FROM friends
+    return db.query(
+        `DELETE FROM friends
             WHERE (receiver = $1 AND sender = $2)
             RETURNING *`,
-            [receiver, sender]
-        )
-        .then(results => {
-            return results.rows;
-        });
+        [receiver, sender]
+    );
 };
 
 exports.acceptFriend = (receiver, sender) => {
-    return db
-        .query(
-            `UPDATE friends
+    return db.query(
+        `UPDATE friends
             SET accepted = true
             WHERE (receiver = $1 AND sender = $2)
             RETURNING *`,
-            [receiver, sender]
-        )
-        .then(results => {
-            return results.rows;
-        });
+        [receiver, sender]
+    );
 };
 
 exports.deleteFriend = (id1, id2) => {
-    return db
-        .query(
-            `DELETE FROM friends
+    return db.query(
+        `DELETE FROM friends
             WHERE (receiver = $1 AND sender = $2)
             OR (receiver = $2 AND sender = $1)
             RETURNING *`,
-            [id1, id2]
-        )
-        .then(results => {
-            return results.rows;
-        });
+        [id1, id2]
+    );
 };

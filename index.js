@@ -77,24 +77,19 @@ if (process.env.NODE_ENV != "production") {
 // routes
 app.post("/registration", (req, res) => {
     const { first, last, email, password } = req.body;
-    if (password != "") {
-        bcrypt
-            .hash(password)
-            .then(hash => {
-                return db.createUser(first, last, email, hash);
-            })
-            .then(results => {
-                req.session.userId = results[0].id;
-                res.json({ success: true });
-            })
-            .catch(err => {
-                res.json({ success: false });
-                console.log("Error in POST /registration: ", err);
-            });
-    } else {
-        res.json({ success: false });
-        console.log("No password provided in POST /registration.");
-    }
+    bcrypt
+        .hash(password)
+        .then(hash => {
+            return db.createUser(first, last, email, hash);
+        })
+        .then(results => {
+            req.session.userId = results[0].id;
+            res.json({ success: true });
+        })
+        .catch(err => {
+            res.json({ success: false, err: "Email address is already used." });
+            console.log("Error in POST /registration: ", err);
+        });
 });
 
 app.post("/login", (req, res) => {
@@ -109,13 +104,13 @@ app.post("/login", (req, res) => {
                 res.json({ success: true });
             } else {
                 delete req.session.userId;
-                res.json({ success: false });
+                res.json({ success: false, err: "Wrong password, please try again." });
             }
         })
         .catch(err => {
             delete req.session.userId;
             console.log("Error in POST /login: ", err);
-            res.json({ success: false });
+            res.json({ success: false, err: "User unknown, please try again." });
         });
 });
 
@@ -175,6 +170,15 @@ app.post("/api/acceptFriend/:id", (req, res) => {
         .catch(err => {
             res.json({ success: false });
             console.log("Error in POST /api/acceptFriend/id: ", err);
+        });
+});
+
+app.post("/api/rejectFriend/:id", (req, res) => {
+    db.cancelFriend(req.session.userId, req.params.id)
+        .then(() => res.json({ success: true }))
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in POST /api/rejectFriend/id: ", err);
         });
 });
 

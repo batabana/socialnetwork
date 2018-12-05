@@ -8,6 +8,7 @@ export default class FriendButton extends React.Component {
             buttonText: ""
         };
         this.handleClick = this.handleClick.bind(this);
+        this.rejectRequest = this.rejectRequest.bind(this);
     }
 
     componentDidMount() {
@@ -85,10 +86,24 @@ export default class FriendButton extends React.Component {
         }
     }
 
+    rejectRequest() {
+        let self = this;
+        return axios.post("/api/rejectFriend/" + this.props.otherUserId).then(({ data }) => {
+            data.success &&
+                self.setState({
+                    clickAction: "makeFriend",
+                    buttonText: "Make Friend Request"
+                });
+        });
+    }
+
     render() {
         return (
             <div>
                 <button onClick={this.handleClick}>{this.state.buttonText}</button>
+                {this.state.clickAction == "acceptFriend" && (
+                    <button onClick={this.rejectRequest}>Reject Friend Request</button>
+                )}
             </div>
         );
     }

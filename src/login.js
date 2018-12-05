@@ -18,25 +18,8 @@ export default class Login extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
-        const { email, password } = this.state;
-        if (!email || !password) {
-            if (!email) this.setState({ emailError: true });
-            if (!password) this.setState({ passwordError: true });
-            return;
-        }
-
-        axios.post("/login", this.state).then(resp => {
-            if (resp.data.success) {
-                this.setState({
-                    error: false
-                });
-                location.replace("/");
-            } else {
-                this.setState({
-                    error: true
-                });
-            }
+        axios.post("/login", this.state).then(({ data }) => {
+            data.success ? location.replace("/") : this.setState({ error: data.err });
         });
     }
 
@@ -47,7 +30,7 @@ export default class Login extends React.Component {
         return (
             <div className="login-container">
                 <h1>Sign in</h1>
-                {this.state.error && <p className="error">Something went wrong, please try again.</p>}
+                {this.state.error && <p className="error">{this.state.error}</p>}
                 <form onSubmit={this.handleSubmit}>
                     <input onChange={this.handleChange} name="email" type="text" placeholder="email address" />
                     <input onChange={this.handleChange} name="password" type="password" placeholder="password" />

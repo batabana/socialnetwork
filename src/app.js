@@ -53,7 +53,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <header>
+                <header className="main-header">
                     <Logo />
                     <ProfilePic
                         first={this.state.first}
