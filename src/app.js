@@ -6,6 +6,7 @@ import OtherPersonProfile from "./otherpersonprofile";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import { BrowserRouter, Route } from "react-router-dom";
+import Friends from "./friends";
 
 export default class App extends React.Component {
     constructor() {
@@ -80,6 +81,7 @@ export default class App extends React.Component {
                             )}
                         />
                         <Route path="/user/:id" component={OtherPersonProfile} />
+                        <Route path="/friends" component={Friends} />
                     </div>
                 </BrowserRouter>
                 <a href="/logout" id="logout">

@@ -73,6 +73,23 @@ a:hover {
     margin-right: 20px;
 }
 
+.friends-container {
+    margin-left: 10px;
+}
+
+.friends-container img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    vertical-align: top;
+}
+
+.friends-container .friend {
+    display: inline-flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
 header {
     display: flex;
     justify-content: space-between;

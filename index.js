@@ -146,6 +146,15 @@ app.get("/api/friend/:id", (req, res) => {
         });
 });
 
+app.get("/api/friends", (req, res) => {
+    db.getFriends(req.session.userId)
+        .then(results => res.json(results))
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in GET /api/friends: ", err);
+        });
+});
+
 app.post("/api/makeFriend/:id", (req, res) => {
     db.makeFriend(req.params.id, req.session.userId)
         .then(() => res.json({ success: true }))

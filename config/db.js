@@ -82,11 +82,26 @@ exports.getFriend = (id1, id2) => {
         });
 };
 
+exports.getFriends = id => {
+    return db
+        .query(
+            `SELECT users.id, first, last, image, accepted
+            FROM friends
+            JOIN users
+            ON (accepted = false AND receiver = $1 AND sender = users.id)
+            OR (accepted = true AND receiver = $1 AND sender = users.id)
+            OR (accepted = true AND sender = $1 AND receiver = users.id)`,
+            [id]
+        )
+        .then(results => {
+            return results.rows;
+        });
+};
+
 exports.makeFriend = (receiver, sender) => {
     return db.query(
         `INSERT INTO friends (receiver, sender)
-        VALUES ($1, $2)
-        RETURNING *`,
+        VALUES ($1, $2)`,
         [receiver, sender]
     );
 };
@@ -94,8 +109,7 @@ exports.makeFriend = (receiver, sender) => {
 exports.cancelFriend = (receiver, sender) => {
     return db.query(
         `DELETE FROM friends
-            WHERE (receiver = $1 AND sender = $2)
-            RETURNING *`,
+            WHERE (receiver = $1 AND sender = $2)`,
         [receiver, sender]
     );
 };
@@ -104,8 +118,7 @@ exports.acceptFriend = (receiver, sender) => {
     return db.query(
         `UPDATE friends
             SET accepted = true
-            WHERE (receiver = $1 AND sender = $2)
-            RETURNING *`,
+            WHERE (receiver = $1 AND sender = $2)`,
         [receiver, sender]
     );
 };
@@ -114,8 +127,7 @@ exports.deleteFriend = (id1, id2) => {
     return db.query(
         `DELETE FROM friends
             WHERE (receiver = $1 AND sender = $2)
-            OR (receiver = $2 AND sender = $1)
-            RETURNING *`,
+            OR (receiver = $2 AND sender = $1)`,
         [id1, id2]
     );
 };
