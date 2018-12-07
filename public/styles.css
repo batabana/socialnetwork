@@ -159,7 +159,7 @@ button:disabled:hover {
     border-radius: 5px;
     z-index: 100;
     display: block;
-    position: fixed;
+    position: absolute;
     top: 150px;
     left: 280px;
     background-color: white;
@@ -167,8 +167,6 @@ button:disabled:hover {
 
 .uploader-background {
     background-color: rgba(0, 0, 0, 0.7);
-    filter: blur(2px);
-    -webkit-filter: blur(2px);
     width: 100%;
     height: 100%;
     position: fixed;
@@ -192,4 +190,8 @@ button:disabled:hover {
     width: 150px;
     z-index: 25;
     background-color: white;
+}
+
+.result {
+    padding: 10px;
 }

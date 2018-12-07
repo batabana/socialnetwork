@@ -25,7 +25,7 @@ export default function reducer(state = {}, action) {
     }
 
     if (action.type == "SEARCH_USERS") {
-        state = { ...state, suggestions: action.results };
+        state = { ...state, suggestions: action.suggestions };
     }
 
     return state;

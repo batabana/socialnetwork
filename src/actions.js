@@ -25,9 +25,16 @@ export async function deleteFriend(id) {
 }
 
 export async function searchUsers(input) {
-    const { data } = await axios.get("/api/search/" + input);
-    return {
-        type: "SEARCH_USERS",
-        results: data
-    };
+    if (input) {
+        const { data } = await axios.get("/api/search/" + input);
+        return {
+            type: "SEARCH_USERS",
+            suggestions: data
+        };
+    } else {
+        return {
+            type: "SEARCH_USERS",
+            suggestions: []
+        };
+    }
 }
