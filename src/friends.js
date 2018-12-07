@@ -1,8 +1,6 @@
-// import {receiveFriendsAndWannabes, unfriend, acceptFriendRequest} from "./actions.js"
-
 import React from "react";
 import { connect } from "react-redux";
-import { receiveFriends } from "./actions";
+import { receiveFriends, deleteFriend, acceptFriend } from "./actions";
 
 class Friends extends React.Component {
     constructor() {
@@ -26,30 +24,40 @@ class Friends extends React.Component {
         return (
             <div className="friends-container">
                 <h1>Wannabes</h1>
-                {wannabes.map(wannabe => {
-                    return (
-                        <div key={wannabe.id}>
-                            <img src={wannabe.image} />
-                            <div className="friend">
-                                {wannabe.first} {wannabe.last}
-                                <button>Accept Friend Request</button>
-                                <button>Reject Friend Request</button>
+                <div className="friendslist">
+                    {wannabes.map(wannabe => {
+                        return (
+                            <div key={wannabe.id}>
+                                <img src={wannabe.image} />
+                                <div className="friend">
+                                    {wannabe.first} {wannabe.last}
+                                    <button onClick={() => this.props.dispatch(acceptFriend(wannabe.id))}>
+                                        Accept Friend Request
+                                    </button>
+                                    <button onClick={() => this.props.dispatch(deleteFriend(wannabe.id))}>
+                                        Reject Friend Request
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
                 <h1>Friends</h1>
-                {friends.map(friend => {
-                    return (
-                        <div key={friend.id}>
-                            <img src={friend.image} />
-                            <div className="friend">
-                                {friend.first} {friend.last}
-                                <button>End Friendship</button>
+                <div className="friendslist">
+                    {friends.map(friend => {
+                        return (
+                            <div key={friend.id}>
+                                <img src={friend.image} />
+                                <div className="friend">
+                                    {friend.first} {friend.last}
+                                    <button onClick={() => this.props.dispatch(deleteFriend(friend.id))}>
+                                        End Friendship
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
         );
     }
@@ -58,7 +66,7 @@ class Friends extends React.Component {
 // runs everytime something changes in the state
 const mapStateToProps = state => {
     // get the whole friends|wannabe list from database and map into two separate lists
-    var list = state.friends;
+    var list = state.friendslist;
     return {
         friends: list && list.filter(user => user.accepted == true),
         wannabes: list && list.filter(user => !user.accepted)

@@ -88,6 +88,13 @@ a:hover {
     display: inline-flex;
     flex-direction: column;
     margin-left: 10px;
+    margin-right: 10px;
+    width: 200px;
+}
+
+.friendslist {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 header {
