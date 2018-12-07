@@ -131,3 +131,17 @@ exports.deleteFriend = (id1, id2) => {
         [id1, id2]
     );
 };
+
+exports.searchUsersByName = input => {
+    return db
+        .query(
+            `SELECT id, first, last, image
+        FROM users
+        WHERE LOWER(first) LIKE LOWER($1)
+        OR LOWER(last) LIKE LOWER($1)`,
+            [input + "%"]
+        )
+        .then(results => {
+            return results.rows;
+        });
+};

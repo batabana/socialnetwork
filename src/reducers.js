@@ -24,5 +24,9 @@ export default function reducer(state = {}, action) {
         state = { ...state, friendslist: state.friendslist.filter(user => user.id != action.old_friend) };
     }
 
+    if (action.type == "SEARCH_USERS") {
+        state = { ...state, suggestions: action.results };
+    }
+
     return state;
 }

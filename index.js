@@ -155,6 +155,15 @@ app.get("/api/friends", (req, res) => {
         });
 });
 
+app.get("/api/search/:input", (req, res) => {
+    db.searchUsersByName(req.params.input)
+        .then(results => res.json(results))
+        .catch(err => {
+            res.json({ success: false });
+            console.log("Error in GET /api/search: ", err);
+        });
+});
+
 app.post("/api/makeFriend/:id", (req, res) => {
     db.makeFriend(req.params.id, req.session.userId)
         .then(() => res.json({ success: true }))

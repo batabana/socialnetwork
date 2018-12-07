@@ -23,3 +23,11 @@ export async function deleteFriend(id) {
         old_friend: id
     };
 }
+
+export async function searchUsers(input) {
+    const { data } = await axios.get("/api/search/" + input);
+    return {
+        type: "SEARCH_USERS",
+        results: data
+    };
+}

@@ -7,15 +7,19 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import { BrowserRouter, Route } from "react-router-dom";
 import Friends from "./friends";
+import Nav from "./nav";
+import Search from "./search";
 
 export default class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            uploaderIsVisible: false
+            uploaderIsVisible: false,
+            navIsVisible: false
         };
         this.showUploader = this.showUploader.bind(this);
         this.hideUploader = this.hideUploader.bind(this);
+        this.toggleNav = this.toggleNav.bind(this);
         this.updateImage = this.updateImage.bind(this);
         this.setBio = this.setBio.bind(this);
     }
@@ -29,6 +33,12 @@ export default class App extends React.Component {
     hideUploader() {
         this.setState({
             uploaderIsVisible: false
+        });
+    }
+
+    toggleNav() {
+        this.setState({
+            navIsVisible: !this.state.navIsVisible
         });
     }
 
@@ -59,12 +69,14 @@ export default class App extends React.Component {
                     <ProfilePic
                         first={this.state.first}
                         last={this.state.last}
-                        profilePicUrl={this.state.image ? this.state.image : "/default.jpg"}
+                        profilePicUrl={this.state.image || "/default.jpg"}
                         showUploader={this.showUploader}
+                        toggleNav={this.toggleNav}
                     />
                 </header>
                 <BrowserRouter>
                     <div>
+                        {this.state.navIsVisible && <Nav showUploader={this.showUploader} toggleNav={this.toggleNav} />}
                         <Route
                             exact
                             path="/"
@@ -82,14 +94,12 @@ export default class App extends React.Component {
                         />
                         <Route path="/user/:id" component={OtherPersonProfile} />
                         <Route path="/friends" component={Friends} />
+                        <Route path="/search" component={Search} />
                     </div>
                 </BrowserRouter>
-                <a href="/logout" id="logout">
-                    Logout
-                </a>
                 {this.state.uploaderIsVisible && (
                     <div>
-                        <div className="uploader-background" />
+                        <div className="uploader-background" onClick={this.hideUploader} />
                         <Uploader hideUploader={this.hideUploader} updateImage={this.updateImage} />
                     </div>
                 )}

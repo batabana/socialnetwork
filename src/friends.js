@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { receiveFriends, deleteFriend, acceptFriend } from "./actions";
+import { Link } from "react-router-dom";
 
 class Friends extends React.Component {
     constructor() {
@@ -28,9 +29,13 @@ class Friends extends React.Component {
                     {wannabes.map(wannabe => {
                         return (
                             <div key={wannabe.id}>
-                                <img src={wannabe.image} />
+                                <Link to={"/user/" + wannabe.id}>
+                                    <img src={wannabe.image || "/default.jpg"} />
+                                </Link>
                                 <div className="friend">
-                                    {wannabe.first} {wannabe.last}
+                                    <h4>
+                                        {wannabe.first} {wannabe.last}
+                                    </h4>
                                     <button onClick={() => this.props.dispatch(acceptFriend(wannabe.id))}>
                                         Accept Friend Request
                                     </button>
@@ -47,9 +52,13 @@ class Friends extends React.Component {
                     {friends.map(friend => {
                         return (
                             <div key={friend.id}>
-                                <img src={friend.image} />
+                                <Link to={"/user/" + friend.id}>
+                                    <img src={friend.image} />
+                                </Link>
                                 <div className="friend">
-                                    {friend.first} {friend.last}
+                                    <h4>
+                                        {friend.first} {friend.last}
+                                    </h4>
                                     <button onClick={() => this.props.dispatch(deleteFriend(friend.id))}>
                                         End Friendship
                                     </button>

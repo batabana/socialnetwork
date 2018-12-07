@@ -42,22 +42,18 @@ body {
     margin-left: 10px;
 }
 
-#logout {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-}
-
 .error {
     color: red;
 }
 
-a {
+a,
+.fake-link {
     text-decoration: none;
     color: #612147;
 }
 
-a:hover {
+a:hover,
+.fake-link:hover {
     color: #509aaf;
 }
 
@@ -73,7 +69,8 @@ a:hover {
     margin-right: 20px;
 }
 
-.friends-container {
+.friends-container,
+.search-container {
     margin-left: 10px;
 }
 
@@ -182,4 +179,17 @@ button:disabled:hover {
 
 .bio-container form {
     display: inline;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 10px;
+    top: 125px;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    width: 150px;
+    z-index: 25;
+    background-color: white;
 }
