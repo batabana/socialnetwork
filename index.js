@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080 127.0.0.1:8080" });
 const compression = require("compression");
 const bodyParser = require("body-parser");
 const bcrypt = require("./config/bcrypt.js");
@@ -22,13 +24,14 @@ if (!process.env.COOKIE_SECRET) {
     var secrets = require("./config/secrets.json");
 }
 const cookieSession = require("cookie-session");
-app.use(
-    cookieSession({
-        secret: process.env.COOKIE_SECRET || secrets.cookieSecret,
-        // delete after 2hr
-        maxAge: 1000 * 60 * 60 * 2
-    })
-);
+const cookieSessionMiddleware = cookieSession({
+    secret: process.env.COOKIE_SECRET || secrets.cookieSecret,
+    maxAge: 1000 * 60 * 60 * 2
+});
+app.use(cookieSessionMiddleware);
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 // setup middleware to prevent csrf-attack
 app.use(csurf());
@@ -261,4 +264,40 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(8080, "127.0.0.1", () => console.log("Listening."));
+server.listen(8080, "127.0.0.1", () => console.log("Listening."));
+
+// empty object, will be filled with pairs of {sockerId: userId}
+let onlineUsers = {};
+
+// listens for connect event (new users logs in or refreshes the page)
+// socket object in properties will be the one sending/receiving messages to/from the frontend
+io.on("connection", socket => {
+    // req.session.userId
+    let userId = socket.request.session.userId;
+    let socketId = socket.id;
+
+    // if last socket with user id: disconnect
+    socket.on("disconnect", () => {
+        for (let socketItem in onlineUsers) {
+            if (onlineUsers[socketId] == userId && socketItem != socketId) {
+                delete onlineUsers[socketId];
+                io.sockets.emit("userLeft", userId);
+                console.log(`socket with id ${socketId} just disconnected`);
+            }
+        }
+    });
+
+    // if new user: inform others about it
+    if (!Object.values(onlineUsers).includes(userId)) {
+        db.getUserById(userId)
+            .then(results => socket.broadcast.emit("userJoined", results))
+            .catch(err => console.log("Error in socket userJoined: ", err));
+    }
+
+    // either way: add new user to the object, get all ids from the object and look them up in the db
+    onlineUsers[socketId] = userId;
+    console.log("onlineUsers", onlineUsers);
+    db.getUsersByIds(Object.values(onlineUsers))
+        .then(results => socket.emit("onlineUsers", results))
+        .catch(err => console.log("Error in socket onlineUsers: ", err));
+});

@@ -28,5 +28,17 @@ export default function reducer(state = {}, action) {
         state = { ...state, suggestions: action.suggestions };
     }
 
+    if (action.type == "LIST_ONLINE_USERS") {
+        state = { ...state, onlineUsers: action.online_users };
+    }
+
+    if (action.type == "ADD_ONLINE_USER") {
+        state = { ...state, onlineUsers: state.onlineUsers.concat(action.new_user) };
+    }
+
+    if (action.type == "DELETE_ONLINE_USER") {
+        state = { ...state, onlineUsers: state.onlineUsers.filter(user => user.id != action.old_user) };
+    }
+
     return state;
 }

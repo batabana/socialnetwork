@@ -30,7 +30,7 @@ exports.getUserByEmail = email => {
 exports.getUserById = id => {
     return db
         .query(
-            `SELECT first, last, email, image, bio
+            `SELECT id, first, last, email, image, bio
         FROM users
         WHERE id = $1`,
             [id]
@@ -144,4 +144,11 @@ exports.searchUsersByName = input => {
         .then(results => {
             return results.rows;
         });
+};
+
+exports.getUsersByIds = arrayOfIds => {
+    const query = `SELECT id, first, last, image FROM users WHERE id = ANY($1)`;
+    return db.query(query, [arrayOfIds]).then(results => {
+        return results.rows;
+    });
 };

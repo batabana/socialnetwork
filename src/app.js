@@ -9,6 +9,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Friends from "./friends";
 import Nav from "./nav";
 import Search from "./search";
+import OnlineUsers from "./onlinefriends";
 
 export default class App extends React.Component {
     constructor() {
@@ -95,6 +96,7 @@ export default class App extends React.Component {
                         <Route path="/user/:id" component={OtherPersonProfile} />
                         <Route path="/friends" component={Friends} />
                         <Route path="/search" component={Search} />
+                        <Route path="/online" component={OnlineUsers} />
                     </div>
                 </BrowserRouter>
                 {this.state.uploaderIsVisible && (
