@@ -16,10 +16,7 @@ class Friends extends React.Component {
     render() {
         const { friends, wannabes } = this.props;
         // empty arrays vs. not existing elements
-        if (!friends) {
-            return null;
-        }
-        if (!wannabes) {
+        if (!friends || !wannabes) {
             return null;
         }
         return (

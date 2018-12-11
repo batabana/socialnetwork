@@ -10,6 +10,8 @@ import Friends from "./friends";
 import Nav from "./nav";
 import Search from "./search";
 import OnlineUsers from "./onlinefriends";
+import CuteAnimals from "./cuteAnimals";
+import Chat from "./chat";
 
 export default class App extends React.Component {
     constructor() {
@@ -97,6 +99,8 @@ export default class App extends React.Component {
                         <Route path="/friends" component={Friends} />
                         <Route path="/search" component={Search} />
                         <Route path="/online" component={OnlineUsers} />
+                        <Route path="/cute" component={CuteAnimals} />
+                        <Route path="/chat" component={Chat} />
                     </div>
                 </BrowserRouter>
                 {this.state.uploaderIsVisible && (

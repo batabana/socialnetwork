@@ -40,5 +40,13 @@ export default function reducer(state = {}, action) {
         state = { ...state, onlineUsers: state.onlineUsers.filter(user => user.id != action.old_user) };
     }
 
+    if (action.type == "ADD_MESSAGES") {
+        state = { ...state, messages: action.messages };
+    }
+
+    if (action.type == "ADD_MESSAGE") {
+        state = { ...state, messages: state.messages.concat(action.new_message) };
+    }
+
     return state;
 }

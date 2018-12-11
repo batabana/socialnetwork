@@ -276,13 +276,11 @@ io.on("connection", socket => {
     let userId = socket.request.session.userId;
     let socketId = socket.id;
 
-    // if disconnect + last socket with user id: inform everyone about it
-    socket.on("disconnect", () => {
-        if (Object.values(onlineUsers).filter(id => id == userId).length < 2) {
-            io.sockets.emit("userLeft", userId);
-        }
-        delete onlineUsers[socketId];
-    });
+    // new connection: send onlineUsers to newly connected user
+    onlineUsers[socketId] = userId;
+    db.getUsersByIds(Object.values(onlineUsers))
+        .then(results => socket.emit("onlineUsers", results))
+        .catch(err => console.log("Error in socket onlineUsers: ", err));
 
     // if new user: inform others about it
     if (!Object.values(onlineUsers).includes(userId)) {
@@ -291,9 +289,28 @@ io.on("connection", socket => {
             .catch(err => console.log("Error in socket userJoined: ", err));
     }
 
-    // new connection: send list to newly connected user
-    onlineUsers[socketId] = userId;
-    db.getUsersByIds(Object.values(onlineUsers))
-        .then(results => socket.emit("onlineUsers", results))
-        .catch(err => console.log("Error in socket onlineUsers: ", err));
+    // if disconnect + last socket with user id: inform everyone about it
+    socket.on("disconnect", () => {
+        if (Object.values(onlineUsers).filter(id => id == userId).length < 2) {
+            io.sockets.emit("userLeft", userId);
+        }
+        delete onlineUsers[socketId];
+    });
+
+    // new connection: send latestMessages to newly connected user
+    db.getMessages()
+        .then(results => socket.emit("latestMessages", results.reverse()))
+        .catch(err => console.log("Error in socket latestMessages: ", err));
+
+    // on chatMessage from frontend: save to db, get remaining data, send back
+    socket.on("newMessage", msg => {
+        db.createMessage(msg, userId)
+            .then(results => {
+                db.getMessageById(results[0].id).then(results => {
+                    results[0].message = msg;
+                    io.sockets.emit("messageObj", results);
+                });
+            })
+            .catch(err => console.log("Error in socket newMessage: ", err));
+    });
 });

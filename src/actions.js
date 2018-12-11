@@ -59,3 +59,17 @@ export async function deleteOnlineUser(oldUser) {
         old_user: oldUser
     };
 }
+
+export function addMessages(messages) {
+    return {
+        type: "ADD_MESSAGES",
+        messages
+    };
+}
+
+export function addMessage(message) {
+    return {
+        type: "ADD_MESSAGE",
+        new_message: message
+    };
+}

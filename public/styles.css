@@ -70,7 +70,8 @@ a:hover,
 }
 
 .friends-container,
-.search-container {
+.search-container,
+.chat-container {
     margin-left: 10px;
 }
 
@@ -94,6 +95,15 @@ a:hover,
     flex-wrap: wrap;
 }
 
+.message-container img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    vertical-align: middle;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -112,6 +122,7 @@ header .profile-pic {
     cursor: pointer;
     border-radius: 5px;
     padding: 10px;
+    border-radius: 50%;
 }
 
 .close-icon {
@@ -194,4 +205,9 @@ button:disabled:hover {
 
 .result {
     padding: 10px;
+}
+
+link,
+.fake-link {
+    cursor: pointer;
 }

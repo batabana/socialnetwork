@@ -152,3 +152,35 @@ exports.getUsersByIds = arrayOfIds => {
         return results.rows;
     });
 };
+
+exports.getMessages = () => {
+    const query = `SELECT first, last, image, message
+    FROM messages
+    JOIN users
+    ON users.id = messages.sender
+    ORDER BY messages.createtime DESC
+    LIMIT 10`;
+    return db.query(query).then(results => {
+        return results.rows;
+    });
+};
+
+exports.createMessage = (message, sender) => {
+    const query = `INSERT INTO messages(message,sender) VALUES ($1, $2) RETURNING id`;
+    return db.query(query, [message, sender]).then(results => {
+        return results.rows;
+    });
+};
+
+exports.getMessageById = id => {
+    const query = `
+        SELECT first, last, image, message
+        FROM messages
+        JOIN users
+        ON users.id = messages.sender
+        WHERE messages.id = $1
+        ORDER BY messages.createtime DESC`;
+    return db.query(query, [id]).then(results => {
+        return results.rows;
+    });
+};
