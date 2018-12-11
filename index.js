@@ -276,15 +276,12 @@ io.on("connection", socket => {
     let userId = socket.request.session.userId;
     let socketId = socket.id;
 
-    // if last socket with user id: disconnect
+    // if disconnect + last socket with user id: inform everyone about it
     socket.on("disconnect", () => {
-        for (let socketItem in onlineUsers) {
-            if (onlineUsers[socketId] == userId && socketItem != socketId) {
-                delete onlineUsers[socketId];
-                io.sockets.emit("userLeft", userId);
-                console.log(`socket with id ${socketId} just disconnected`);
-            }
+        if (Object.values(onlineUsers).filter(id => id == userId).length < 2) {
+            io.sockets.emit("userLeft", userId);
         }
+        delete onlineUsers[socketId];
     });
 
     // if new user: inform others about it
@@ -294,9 +291,8 @@ io.on("connection", socket => {
             .catch(err => console.log("Error in socket userJoined: ", err));
     }
 
-    // either way: add new user to the object, get all ids from the object and look them up in the db
+    // new connection: send list to newly connected user
     onlineUsers[socketId] = userId;
-    console.log("onlineUsers", onlineUsers);
     db.getUsersByIds(Object.values(onlineUsers))
         .then(results => socket.emit("onlineUsers", results))
         .catch(err => console.log("Error in socket onlineUsers: ", err));
