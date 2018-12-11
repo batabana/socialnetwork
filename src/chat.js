@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import initSocket from "./socket";
+import { Link } from "react-router-dom";
 
 class Chat extends React.Component {
     constructor() {
@@ -32,11 +33,11 @@ class Chat extends React.Component {
         }
         let arrOfMessages = this.props.messages.map((elem, idx) => {
             return (
-                <div key={idx}>
-                    <p>
-                        <img src={elem.image} />
-                        {elem.first} {elem.last}: {elem.message} {elem.createtime}
-                    </p>
+                <div key={idx} className="message">
+                    <Link to={"/user/" + elem.sender}>
+                        <img src={elem.image} alt={elem.first + " " + elem.last} title={elem.first + " " + elem.last} />
+                    </Link>
+                    {elem.message} <span className="timestamp">{elem.createtime_rel}</span>
                 </div>
             );
         });

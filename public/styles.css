@@ -9,19 +9,36 @@ body {
     margin: 0;
 }
 
+.dummy {
+    background-color: #509aaf;
+    width: 10%;
+}
+
+.main-container {
+    display: flex;
+    min-height: 90vh;
+}
+
+.content-container {
+    width: 80%;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    z-index: 2;
+}
+
 .welcome-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* position: fixed;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background-image: url("/background.jpg");
+    background-image: url("/background2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 50% 25%; */
+    background-position: 50% 25%;
+    font-weight: bold;
 }
 
 .registration-container form,
@@ -29,6 +46,17 @@ body {
     width: 300px;
     display: flex;
     flex-direction: column;
+    margin-left: 40px;
+}
+
+.inner-welcome-container {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
 }
 
 #startlogo {
@@ -39,7 +67,7 @@ body {
 #logo {
     width: 100px;
     vertical-align: middle;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 .error {
@@ -65,14 +93,16 @@ a:hover,
 .opp-container .profile-pic {
     width: 400px;
     float: left;
-    margin-left: 10px;
+    margin-left: 20px;
     margin-right: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
 }
 
 .friends-container,
 .search-container,
 .chat-container {
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 .friends-container img {
@@ -80,6 +110,7 @@ a:hover,
     height: 200px;
     object-fit: cover;
     vertical-align: top;
+    margin-bottom: 10px;
 }
 
 .friends-container .friend {
@@ -95,9 +126,10 @@ a:hover,
     flex-wrap: wrap;
 }
 
-.message-container img {
-    width: 75px;
-    height: 75px;
+.message-container img,
+.result img {
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     vertical-align: middle;
     margin-right: 10px;
@@ -195,8 +227,8 @@ button:disabled:hover {
     flex-direction: column;
     position: absolute;
     right: 10px;
-    top: 125px;
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+    top: 120px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
     padding: 10px;
     width: 200px;
     z-index: 25;
@@ -210,4 +242,13 @@ button:disabled:hover {
 link,
 .fake-link {
     cursor: pointer;
+}
+
+.message {
+    padding: 5px;
+    /* box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5); */
+}
+
+.timestamp {
+    color: #9f9faf;
 }

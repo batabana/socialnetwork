@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("./config/bcrypt.js");
 const db = require("./config/db.js");
 const csurf = require("csurf");
+const moment = require("moment");
 
 // file upload requirements
 const multer = require("multer");
@@ -299,7 +300,13 @@ io.on("connection", socket => {
 
     // new connection: send latestMessages to newly connected user
     db.getMessages()
-        .then(results => socket.emit("latestMessages", results.reverse()))
+        .then(results => {
+            results.map(item => {
+                item.createtime_rel = moment(item.createtime).fromNow();
+                return item;
+            });
+            socket.emit("latestMessages", results.reverse());
+        })
         .catch(err => console.log("Error in socket latestMessages: ", err));
 
     // on chatMessage from frontend: save to db, get remaining data, send back
@@ -308,6 +315,7 @@ io.on("connection", socket => {
             .then(results => {
                 db.getMessageById(results[0].id).then(results => {
                     results[0].message = msg;
+                    results[0].createtime_rel = moment(results[0].createtime).fromNow();
                     io.sockets.emit("messageObj", results);
                 });
             })

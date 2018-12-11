@@ -17,13 +17,14 @@ class Search extends React.Component {
         const { suggestions } = this.props;
         return (
             <div className="search-container">
-                <h1>Search</h1>
+                <h1>Search Users</h1>
                 <input onChange={this.handleChange} type="text" name="searchinput" />
                 {suggestions &&
                     suggestions.map(user => {
                         return (
                             <div className="result" key={user.id}>
                                 <a href={"/user/" + user.id}>
+                                    <img src={user.image} />
                                     {user.first} {user.last}
                                 </a>
                             </div>

@@ -69,7 +69,7 @@ export default class Bio extends React.Component {
                         ) : (
                             <div>
                                 <Link onClick={this.showEditor} to="/">
-                                    Add bio
+                                    Say something about yourself
                                 </Link>
                             </div>
                         )}

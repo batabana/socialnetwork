@@ -29,9 +29,9 @@ export default class Login extends React.Component {
 
         return (
             <div className="login-container">
-                <h1>Sign in</h1>
-                {this.state.error && <p className="error">{this.state.error}</p>}
                 <form onSubmit={this.handleSubmit}>
+                    <h1>Sign in</h1>
+                    {this.state.error && <p className="error">{this.state.error}</p>}
                     <input onChange={this.handleChange} name="email" type="text" placeholder="email address" />
                     <input onChange={this.handleChange} name="password" type="password" placeholder="password" />
                     <button disabled={!isEnabled}>Login</button>

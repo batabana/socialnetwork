@@ -154,7 +154,7 @@ exports.getUsersByIds = arrayOfIds => {
 };
 
 exports.getMessages = () => {
-    const query = `SELECT first, last, image, message
+    const query = `SELECT sender, first, last, image, message, messages.createtime AS createtime
     FROM messages
     JOIN users
     ON users.id = messages.sender
@@ -174,7 +174,7 @@ exports.createMessage = (message, sender) => {
 
 exports.getMessageById = id => {
     const query = `
-        SELECT first, last, image, message
+        SELECT sender, first, last, image, message, messages.createtime AS createtime
         FROM messages
         JOIN users
         ON users.id = messages.sender

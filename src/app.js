@@ -10,7 +10,6 @@ import Friends from "./friends";
 import Nav from "./nav";
 import Search from "./search";
 import OnlineUsers from "./onlinefriends";
-import CuteAnimals from "./cuteAnimals";
 import Chat from "./chat";
 
 export default class App extends React.Component {
@@ -78,29 +77,34 @@ export default class App extends React.Component {
                     />
                 </header>
                 <BrowserRouter>
-                    <div>
-                        {this.state.navIsVisible && <Nav showUploader={this.showUploader} toggleNav={this.toggleNav} />}
-                        <Route
-                            exact
-                            path="/"
-                            render={() => (
-                                <Profile
-                                    id={this.state.id}
-                                    first={this.state.first}
-                                    last={this.state.last}
-                                    image={this.state.image}
-                                    bio={this.state.bio}
-                                    setBio={this.setBio}
-                                    showUploader={this.showUploader}
-                                />
+                    <div className="main-container">
+                        <div className="dummy" />
+                        <div className="content-container">
+                            {this.state.navIsVisible && (
+                                <Nav showUploader={this.showUploader} toggleNav={this.toggleNav} />
                             )}
-                        />
-                        <Route path="/user/:id" component={OtherPersonProfile} />
-                        <Route path="/friends" component={Friends} />
-                        <Route path="/search" component={Search} />
-                        <Route path="/online" component={OnlineUsers} />
-                        <Route path="/cute" component={CuteAnimals} />
-                        <Route path="/chat" component={Chat} />
+                            <Route
+                                exact
+                                path="/"
+                                render={() => (
+                                    <Profile
+                                        id={this.state.id}
+                                        first={this.state.first}
+                                        last={this.state.last}
+                                        image={this.state.image}
+                                        bio={this.state.bio}
+                                        setBio={this.setBio}
+                                        showUploader={this.showUploader}
+                                    />
+                                )}
+                            />
+                            <Route path="/user/:id" component={OtherPersonProfile} />
+                            <Route path="/friends" component={Friends} />
+                            <Route path="/search" component={Search} />
+                            <Route path="/online" component={OnlineUsers} />
+                            <Route path="/chat" component={Chat} />
+                        </div>
+                        <div className="dummy" />
                     </div>
                 </BrowserRouter>
                 {this.state.uploaderIsVisible && (
