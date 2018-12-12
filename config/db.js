@@ -184,3 +184,9 @@ exports.getMessageById = id => {
         return results.rows;
     });
 };
+
+exports.getOpenFriendRequests = async id => {
+    const query = `SELECT * FROM friends WHERE receiver = $1 AND accepted = false`;
+    const { rows } = await db.query(query, [id]);
+    return rows;
+};

@@ -5,14 +5,16 @@ import Profile from "./profile";
 import OtherPersonProfile from "./otherpersonprofile";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import Friends from "./friends";
 import Nav from "./nav";
 import Search from "./search";
 import OnlineUsers from "./onlinefriends";
 import Chat from "./chat";
+import Blink from "./blink";
+import { connect } from "react-redux";
 
-export default class App extends React.Component {
+class App extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -65,18 +67,27 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <div>
-                <header className="main-header">
-                    <Logo />
-                    <ProfilePic
-                        first={this.state.first}
-                        last={this.state.last}
-                        profilePicUrl={this.state.image || "/default.jpg"}
-                        showUploader={this.showUploader}
-                        toggleNav={this.toggleNav}
-                    />
-                </header>
-                <BrowserRouter>
+            <BrowserRouter>
+                <div>
+                    <header className="main-header">
+                        <Logo />
+                        <div>
+                            {this.props.friendIndicator && (
+                                <Link to="/friends">
+                                    <Blink rate={1000}>
+                                        <img src="/new_friend.png" id="friend-icon" />
+                                    </Blink>
+                                </Link>
+                            )}
+                            <ProfilePic
+                                first={this.state.first}
+                                last={this.state.last}
+                                profilePicUrl={this.state.image || "/default.jpg"}
+                                showUploader={this.showUploader}
+                                toggleNav={this.toggleNav}
+                            />
+                        </div>
+                    </header>
                     <div className="main-container">
                         <div className="dummy" />
                         <div className="content-container">
@@ -106,14 +117,23 @@ export default class App extends React.Component {
                         </div>
                         <div className="dummy" />
                     </div>
-                </BrowserRouter>
-                {this.state.uploaderIsVisible && (
-                    <div>
-                        <div className="uploader-background" onClick={this.hideUploader} />
-                        <Uploader hideUploader={this.hideUploader} updateImage={this.updateImage} />
-                    </div>
-                )}
-            </div>
+
+                    {this.state.uploaderIsVisible && (
+                        <div>
+                            <div className="uploader-background" onClick={this.hideUploader} />
+                            <Uploader hideUploader={this.hideUploader} updateImage={this.updateImage} />
+                        </div>
+                    )}
+                </div>
+            </BrowserRouter>
         );
     }
 }
+
+const mapStateToProps = function(state) {
+    return {
+        friendIndicator: state.friendIndicator
+    };
+};
+
+export default connect(mapStateToProps)(App);

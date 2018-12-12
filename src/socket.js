@@ -1,5 +1,5 @@
 import * as io from "socket.io-client";
-import { listOnlineUsers, addOnlineUser, deleteOnlineUser, addMessages, addMessage } from "./actions";
+import { listOnlineUsers, addOnlineUser, deleteOnlineUser, addMessages, addMessage, toggleIndicator } from "./actions";
 
 let socket;
 export default function initSocket(store) {
@@ -24,6 +24,10 @@ export default function initSocket(store) {
 
         socket.on("messageObj", message => {
             store.dispatch(addMessage(message));
+        });
+
+        socket.on("openRequests", status => {
+            store.dispatch(toggleIndicator(status));
         });
     }
 

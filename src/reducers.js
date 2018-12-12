@@ -48,5 +48,9 @@ export default function reducer(state = {}, action) {
         state = { ...state, messages: state.messages.concat(action.new_message) };
     }
 
+    if (action.type == "TOGGLE_INDICATOR") {
+        state = { ...state, friendIndicator: action.indicator };
+    }
+
     return state;
 }

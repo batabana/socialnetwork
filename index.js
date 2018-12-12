@@ -272,7 +272,7 @@ let onlineUsers = {};
 
 // listens for connect event (new users logs in or refreshes the page)
 // socket object in properties will be the one sending/receiving messages to/from the frontend
-io.on("connection", socket => {
+io.on("connection", async socket => {
     // req.session.userId
     let userId = socket.request.session.userId;
     let socketId = socket.id;
@@ -320,5 +320,43 @@ io.on("connection", socket => {
                 });
             })
             .catch(err => console.log("Error in socket newMessage: ", err));
+    });
+
+    // new connection: check for open friend requests
+    try {
+        const openRequests = await db.getOpenFriendRequests(userId);
+        if (openRequests.length) {
+            socket.emit("openRequests", true);
+        }
+    } catch (err) {
+        console.log("Error in socket openRequests: ", err);
+    }
+
+    // react to changed friend requests
+    socket.on("changedFriendsRequests", async id => {
+        let emitId;
+        if (id) {
+            // receiver is other person
+            emitId = parseInt(id);
+        } else {
+            // receiver is me
+            emitId = userId;
+        }
+        if (Object.values(onlineUsers).includes(emitId)) {
+            for (let user in onlineUsers) {
+                if (onlineUsers[user] == emitId) {
+                    try {
+                        const openRequests = await db.getOpenFriendRequests(emitId);
+                        if (openRequests.length) {
+                            io.to(user).emit("openRequests", true);
+                        } else {
+                            io.to(user).emit("openRequests", false);
+                        }
+                    } catch (err) {
+                        console.log("Error in socket on changedFriendsRequests: ", err);
+                    }
+                }
+            }
+        }
     });
 });

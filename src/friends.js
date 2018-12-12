@@ -50,7 +50,7 @@ class Friends extends React.Component {
                         return (
                             <div key={friend.id}>
                                 <Link to={"/user/" + friend.id}>
-                                    <img src={friend.image} />
+                                    <img src={friend.image || "/default.jpg"} />
                                 </Link>
                                 <div className="friend">
                                     <h4>

@@ -73,3 +73,10 @@ export function addMessage(message) {
         new_message: message
     };
 }
+
+export function toggleIndicator(status) {
+    return {
+        type: "TOGGLE_INDICATOR",
+        indicator: status
+    };
+}

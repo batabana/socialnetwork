@@ -37,8 +37,8 @@ body {
     background-image: url("/background2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 50% 25%;
     font-weight: bold;
+    overflow-y: scroll;
 }
 
 .registration-container form,
@@ -155,6 +155,16 @@ header .profile-pic {
     border-radius: 5px;
     padding: 10px;
     border-radius: 50%;
+}
+
+#friend-icon {
+    width: 50px;
+}
+
+.ui-blink {
+    position: absolute;
+    top: 40px;
+    right: 150px;
 }
 
 .close-icon {
