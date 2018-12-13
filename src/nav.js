@@ -9,8 +9,8 @@ export default function Nav(props) {
             <span className="fake-link" onClick={props.showUploader}>
                 Change profile picture
             </span>
-            <Link to="/friends">View all friends</Link>
             <Link to="/online">View online users</Link>
+            <Link to="/friends">View friends</Link>
             <Link to="/chat">Chat</Link>
             <Link to="/search">Search people</Link>
             <a href="/logout">Logout</a>

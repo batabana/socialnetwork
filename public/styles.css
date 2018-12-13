@@ -26,9 +26,6 @@ body {
 }
 
 .welcome-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -39,6 +36,9 @@ body {
     background-size: cover;
     font-weight: bold;
     overflow-y: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .registration-container form,
@@ -46,11 +46,17 @@ body {
     width: 300px;
     display: flex;
     flex-direction: column;
-    margin-left: 40px;
+}
+
+.registration-container,
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .inner-welcome-container {
-    margin-top: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,8 +66,8 @@ body {
 }
 
 #startlogo {
-    width: 200px;
-    margin-top: 30px;
+    width: 180px;
+    margin-top: 10px;
 }
 
 #logo {
@@ -101,8 +107,13 @@ a:hover,
 
 .friends-container,
 .search-container,
-.chat-container {
+.chat-container,
+.no-match-container {
     margin-left: 20px;
+}
+
+.no-match-container img {
+    max-width: 50%;
 }
 
 .friends-container img {
@@ -177,7 +188,7 @@ button,
 textarea {
     padding: 10px;
     background: white;
-    margin: 5px;
+    margin: 3px;
     border-radius: 5px;
     font-size: 14px;
     border: 1px solid #509aaf;
@@ -205,16 +216,18 @@ button:disabled:hover {
 
 .uploader {
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
-    width: 50%;
+    width: 550px;
     padding: 20px;
     margin: 0 auto;
     margin-top: 50px;
     border-radius: 5px;
     z-index: 100;
-    display: block;
-    position: absolute;
-    top: 150px;
-    left: 280px;
+    position: fixed;
+    height: 150px;
+    top: 50%;
+    left: 50%;
+    margin-top: -75px;
+    margin-left: -275px;
     background-color: white;
 }
 

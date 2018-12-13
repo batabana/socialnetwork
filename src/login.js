@@ -37,7 +37,7 @@ export default class Login extends React.Component {
                     <button disabled={!isEnabled}>Login</button>
                 </form>
                 <p>
-                    If you don{"'"}t have an account yet, please <Link to="/">sign up</Link>.
+                    If you don{"'"}t have an account, please <Link to="/">sign up</Link>.
                 </p>
             </div>
         );

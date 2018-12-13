@@ -5,13 +5,14 @@ import Profile from "./profile";
 import OtherPersonProfile from "./otherpersonprofile";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
 import Friends from "./friends";
 import Nav from "./nav";
 import Search from "./search";
 import OnlineUsers from "./onlinefriends";
 import Chat from "./chat";
 import Blink from "./blink";
+import NoMatch from "./nomatch";
 import { connect } from "react-redux";
 
 class App extends React.Component {
@@ -94,26 +95,29 @@ class App extends React.Component {
                             {this.state.navIsVisible && (
                                 <Nav showUploader={this.showUploader} toggleNav={this.toggleNav} />
                             )}
-                            <Route
-                                exact
-                                path="/"
-                                render={() => (
-                                    <Profile
-                                        id={this.state.id}
-                                        first={this.state.first}
-                                        last={this.state.last}
-                                        image={this.state.image}
-                                        bio={this.state.bio}
-                                        setBio={this.setBio}
-                                        showUploader={this.showUploader}
-                                    />
-                                )}
-                            />
-                            <Route path="/user/:id" component={OtherPersonProfile} />
-                            <Route path="/friends" component={Friends} />
-                            <Route path="/search" component={Search} />
-                            <Route path="/online" component={OnlineUsers} />
-                            <Route path="/chat" component={Chat} />
+                            <Switch>
+                                <Route
+                                    exact
+                                    path="/"
+                                    render={() => (
+                                        <Profile
+                                            id={this.state.id}
+                                            first={this.state.first}
+                                            last={this.state.last}
+                                            image={this.state.image}
+                                            bio={this.state.bio}
+                                            setBio={this.setBio}
+                                            showUploader={this.showUploader}
+                                        />
+                                    )}
+                                />
+                                <Route path="/user/:id" component={OtherPersonProfile} />
+                                <Route path="/friends" component={Friends} />
+                                <Route path="/search" component={Search} />
+                                <Route path="/online" component={OnlineUsers} />
+                                <Route path="/chat" component={Chat} />
+                                <Route component={NoMatch} />
+                            </Switch>
                         </div>
                         <div className="dummy" />
                     </div>

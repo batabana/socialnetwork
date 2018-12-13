@@ -325,9 +325,7 @@ io.on("connection", async socket => {
     // new connection: check for open friend requests
     try {
         const openRequests = await db.getOpenFriendRequests(userId);
-        if (openRequests.length) {
-            socket.emit("openRequests", true);
-        }
+        openRequests.length && socket.emit("openRequests", true);
     } catch (err) {
         console.log("Error in socket openRequests: ", err);
     }
@@ -335,23 +333,16 @@ io.on("connection", async socket => {
     // react to changed friend requests
     socket.on("changedFriendsRequests", async id => {
         let emitId;
-        if (id) {
-            // receiver is other person
-            emitId = parseInt(id);
-        } else {
-            // receiver is me
-            emitId = userId;
-        }
+        // check if receiver is me or some other person
+        // id is a string, needs to be parsed as integer
+        emitId = id ? parseInt(id) : userId;
         if (Object.values(onlineUsers).includes(emitId)) {
             for (let user in onlineUsers) {
                 if (onlineUsers[user] == emitId) {
                     try {
                         const openRequests = await db.getOpenFriendRequests(emitId);
-                        if (openRequests.length) {
-                            io.to(user).emit("openRequests", true);
-                        } else {
-                            io.to(user).emit("openRequests", false);
-                        }
+                        let requestsLeft = openRequests.length ? true : false;
+                        io.to(user).emit("openRequests", requestsLeft);
                     } catch (err) {
                         console.log("Error in socket on changedFriendsRequests: ", err);
                     }
