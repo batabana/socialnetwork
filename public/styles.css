@@ -199,6 +199,10 @@ textarea {
     min-height: 100px;
 }
 
+.chat-container textarea {
+    margin-bottom: 20px;
+}
+
 button {
     background: #509aaf;
     cursor: pointer;

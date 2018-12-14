@@ -277,12 +277,6 @@ io.on("connection", async socket => {
     let userId = socket.request.session.userId;
     let socketId = socket.id;
 
-    // new connection: send onlineUsers to newly connected user
-    onlineUsers[socketId] = userId;
-    db.getUsersByIds(Object.values(onlineUsers))
-        .then(results => socket.emit("onlineUsers", results))
-        .catch(err => console.log("Error in socket onlineUsers: ", err));
-
     // if new user: inform others about it
     if (!Object.values(onlineUsers).includes(userId)) {
         db.getUserById(userId)
@@ -297,6 +291,12 @@ io.on("connection", async socket => {
         }
         delete onlineUsers[socketId];
     });
+
+    // new connection: send onlineUsers to newly connected user
+    onlineUsers[socketId] = userId;
+    db.getUsersByIds(Object.values(onlineUsers))
+        .then(results => socket.emit("onlineUsers", results))
+        .catch(err => console.log("Error in socket onlineUsers: ", err));
 
     // new connection: send latestMessages to newly connected user
     db.getMessages()

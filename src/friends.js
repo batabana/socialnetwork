@@ -21,7 +21,7 @@ class Friends extends React.Component {
         }
         return (
             <div className="friends-container">
-                <h1>Wannabes</h1>
+                <h1>Requests</h1>
                 <div className="friendslist">
                     {wannabes.map(wannabe => {
                         return (

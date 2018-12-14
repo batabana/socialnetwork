@@ -10,9 +10,9 @@ export default function Nav(props) {
                 Change profile picture
             </span>
             <Link to="/online">View online users</Link>
+            <Link to="/search">Search people</Link>
             <Link to="/friends">View friends</Link>
             <Link to="/chat">Chat</Link>
-            <Link to="/search">Search people</Link>
             <a href="/logout">Logout</a>
         </div>
     );
