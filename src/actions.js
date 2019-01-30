@@ -39,21 +39,21 @@ export async function searchUsers(input) {
     }
 }
 
-export async function listOnlineUsers(listOfOnlineUsers) {
+export function listOnlineUsers(listOfOnlineUsers) {
     return {
         type: "LIST_ONLINE_USERS",
         online_users: listOfOnlineUsers
     };
 }
 
-export async function addOnlineUser(newUser) {
+export function addOnlineUser(newUser) {
     return {
         type: "ADD_ONLINE_USER",
         new_user: [newUser]
     };
 }
 
-export async function deleteOnlineUser(oldUser) {
+export function deleteOnlineUser(oldUser) {
     return {
         type: "DELETE_ONLINE_USER",
         old_user: oldUser
